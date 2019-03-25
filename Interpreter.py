@@ -1,17 +1,30 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-import sys
-import Lexer
+from Token import Token
+from Constants import Token_type
 
-def interpret(filename: str):
-    contetnt = []
-    with open(filename, 'r', encoding='utf-8') as f:
-        for line in f:
-            contetnt.append(line.replace('\n',''))
-    Lexer.lex(contetnt)
+def interpret(tokens: list):
+    for line_index,token_line in enumerate(tokens):
+        for index,token in enumerate(token_line):
+            try:
+                if token.token_type == Token_type.ADD:
+                    token_line[index] = Token(Token_type.INTEGER,token_line[index-1].value+token_line[index+1].value)
+                elif token.token_type == Token_type.SUB:
+                    token_line[index] = Token(Token_type.INTEGER,token_line[index-1].value-token_line[index+1].value)
+                elif token.token_type == Token_type.MUL:
+                    token_line[index] = Token(Token_type.INTEGER,token_line[index-1].value*token_line[index+1].value)
+                elif token.token_type == Token_type.DIV:
+                    token_line[index] = Token(Token_type.INTEGER,token_line[index-1].value/token_line[index+1].value)
+                else:
+                    continue
+                token_line.pop(index+1)
+                token_line.pop(index-1)
+            except:
+                raise Exception('Error in Line {line} near {token_value}'.
+                    format(line=line_index,token_value=token.value))
 
-if __name__ == "__main__":
-    try:
-        interpret(sys.argv[1])
-    except Exception as e:
-        print(e)
+
+    print('TOKENS:')
+    for line in tokens:
+        print(line)
+    print('')
+    print('='*100)
+    print('')
