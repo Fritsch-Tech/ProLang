@@ -2,7 +2,9 @@ from Token import Token
 from Constants import Token_type
 
 def interpret(tokens: list):
+
     for line_index,token_line in enumerate(tokens):
+        # Calculate all calculationes
         for index,token in enumerate(token_line):
             try:
                 if token.token_type == Token_type.ADD:
@@ -20,6 +22,7 @@ def interpret(tokens: list):
             except:
                 raise Exception('Error in Line {line} near {token_value}'.
                     format(line=line_index,token_value=token.value))
+    #
 
 
     print('TOKENS:')

@@ -9,7 +9,7 @@ def lex(content: list):
         token = ''
         string_open = False
         for c in line:
-            if c == '"':
+            if c == '"' or c == "'":
                 if string_open:
                     string_open = False
                     tokens_line.append(Token(Token_type.STRING,token))
@@ -19,27 +19,34 @@ def lex(content: list):
             elif c == '(':
                 __add_previous(token,tokens_line)
                 token = ''
-                tokens_line.append(Token(Token_type.PAR_OPEN,c))
+                tokens_line.append(Token(Token_type.PAR_OPEN,None))
             elif c == ')':
                 __add_previous(token,tokens_line)
                 token = ''
-                tokens_line.append(Token(Token_type.PAR_CLOSE,c))
+                tokens_line.append(Token(Token_type.PAR_CLOSE,None))
             elif c == '+':
                 __add_previous(token,tokens_line)
                 token = ''
-                tokens_line.append(Token(Token_type.ADD,c))
+                tokens_line.append(Token(Token_type.ADD,None))
             elif c == '-':
                 __add_previous(token,tokens_line)
                 token = ''
-                tokens_line.append(Token(Token_type.SUB,c))
+                tokens_line.append(Token(Token_type.SUB,None))
             elif c == '*':
                 __add_previous(token,tokens_line)
                 token = ''
-                tokens_line.append(Token(Token_type.MUL,c))
+                tokens_line.append(Token(Token_type.MUL,None))
             elif c == '/':
                 __add_previous(token,tokens_line)
                 token = ''
-                tokens_line.append(Token(Token_type.DIV,c))
+                tokens_line.append(Token(Token_type.DIV,None))
+            elif c == '=':
+                __add_previous(token,tokens_line)
+                token = ''
+                if tokens_line[-1].token_type == Token_type.ASSIGN:
+                    tokens_line[-1] = Token(Token_type.COMPARE,None)
+                else:
+                    tokens_line.append(Token(Token_type.ASSIGN,None))
             else:
                 token += c
 
@@ -60,8 +67,9 @@ def lex(content: list):
     return(tokens)
 
 def __add_previous(token: str,tokens_line: list):
+    token.replace(' ','')
     if token.isdigit():
-        tokens_line.append(Token(Token_type.INTEGER,token))
-    else:
+        tokens_line.append(Token(Token_type.INTEGER,int(token)))
+    elif token != '':
         tokens_line.append(Token(Token_type.COMMAND,token))
     token = ''
