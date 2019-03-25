@@ -1,0 +1,13 @@
+class Token_type() :
+    EOF     =   0
+    COMMAND =   1
+    STRING =    2
+    INTEGER =   3
+    ASSIGN =    4
+    COMPARE =   5
+    PAR_OPEN =  6
+    PAR_CLOSE = 7
+    PLUS =      8
+    MINUS =     9
+    MUL =       10
+    DIV =       11
