@@ -24,6 +24,10 @@ def lex(content: list):
                 __add_previous(token,tokens_line)
                 token = ''
                 tokens_line.append(Token(Token_type.PAR_CLOSE,None))
+            elif c == '.':
+                __add_previous(token,tokens_line)
+                token = ''
+                tokens_line.append(Token(Token_type.PARENT,None))
             elif c == '+':
                 __add_previous(token,tokens_line)
                 token = ''
@@ -47,6 +51,9 @@ def lex(content: list):
                     tokens_line[-1] = Token(Token_type.COMPARE,None)
                 else:
                     tokens_line.append(Token(Token_type.ASSIGN,None))
+            elif c == ' ':
+                __add_previous(token,tokens_line)
+                token = ''
             else:
                 token += c
 
@@ -71,5 +78,18 @@ def __add_previous(token: str,tokens_line: list):
     if token.isdigit():
         tokens_line.append(Token(Token_type.INTEGER,int(token)))
     elif token != '':
-        tokens_line.append(Token(Token_type.COMMAND,token))
+        if token == 'ADD':
+            tokens_line.append(Token(Token_type.ADD,None))
+        elif token == 'SUB':
+            tokens_line.append(Token(Token_type.SUB,None))
+        elif token == 'MUL':
+            tokens_line.append(Token(Token_type.MUL,None))
+        elif token == 'DIV':
+            tokens_line.append(Token(Token_type.DIV,None))
+        elif token == 'IS':
+            tokens_line.append(Token(Token_type.ASSIGN,None))
+        elif token == 'SUB':
+            tokens_line.append(Token(Token_type.SUB,None))
+        else:
+            tokens_line.append(Token(Token_type.COMMAND,token))
     token = ''

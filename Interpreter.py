@@ -25,7 +25,7 @@ def interpret(tokens: list):
     #
 
 
-    print('TOKENS:')
+    print('CALCULATED TOKENS:')
     for line in tokens:
         print(line)
     print('')
